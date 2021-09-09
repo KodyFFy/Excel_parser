@@ -1,10 +1,11 @@
 import configparser as cfg
 import datetime
-import requests
-import lxml
 import time
+import sys
 import os
 
+import requests
+import lxml
 import openpyxl as xcl
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -31,8 +32,8 @@ def menu(URL):
 	
 	if _row[0] == "0":
 		row = _row[1] # 9 +7
-	else:
-		pass
+
+	row = _row
 	row = int(row) + 7
 
 	date2 = str(datetime.date.today())
@@ -83,26 +84,27 @@ def get_con_Dollar(html): # ГОТОВ
 def parse_cooper():
 	options = webdriver.ChromeOptions()
 	options.add_argument('headless')
-	options.add_argument('window-size=1920x935')
-	
+	print("Соединение с сайтами установленно!")	
 	binary = ["Drivers\\Chrom\\chromedriver.exe", "Drivers\\FireFox\\geckodriver.exe", "Drivers\\Opera\\operadriver.exe"]
-
-	driver = webdriver.Chrome(executable_path=binary[0], options=options)
-	print("Соединение с сайтами установленно!")
-	
 	try:
+		driver = webdriver.Chrome(executable_path=binary[0], options=options)	
 		driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+		print("Найден браузер Chrome. Начинаю работу!")
 	except:
 		try:
 			print("Не установлен Google Chrome. Ищу другой браузер")
-			driver = webdriver.Chrome(executable_path=binary[1], options=options)
+			driver = webdriver.Firefox(executable_path=binary[1], options=options)
+			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+			print("Найден браузер FireFox. Начинаю работу!")
 		except:
 			try:
 				print("Не установлен FireFox. Ищу другой браузер")
-				driver = webdriver.Chrome(executable_path=binary[2], options=options)
+				driver = webdriver.Opera(executable_path=binary[2], options=options)
+				driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+				print("Найден браузер Opera. Начинаю работу!")
 			except:
 				print("Я не нашёл браузер! Завершаю программу!")
-				exit(1)
+				sys.exit(1)
 	try:
 		driver.implicitly_wait(7)
 		time.sleep(4)
