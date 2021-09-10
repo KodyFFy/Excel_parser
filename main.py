@@ -12,7 +12,6 @@ from selenium import webdriver
 
 URL1 = "https://cbr.ru/currency_base/daily/?UniDbQuery.Posted=True&UniDbQuery.To=" # Цена на доллар
 URL2 = "https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary" # Цена на медь
-
 def menu(URL):
 	print("ПАРСЕР ЦЕНЫ НА ДОЛЛАР И НА МЕДЬ")
 	
@@ -36,22 +35,29 @@ def menu(URL):
 	row = _row
 	row = int(row) + 7
 
-	date2 = str(datetime.date.today())
-	date2 = date2.replace("-", ".")
 
+	
+
+	date2 = datetime.date.today()
+	date2 = date2 + datetime.timedelta(days = 1)
+	date2 = str(date2)
+	date2 = date2.replace("-", ".")	
+	
 	med = parse_cooper()
 	dollar = parse_dollar(URL, date2)
-
-	employees_sheet.cell(row=row-1, column=2).value = med ### Медь
+	dollar = dollar.replace(",",".")	
+	med = med.replace(",",".")
+	
+	employees_sheet.cell(row=row - 1, column=2).value = med ### Медь
 	employees_sheet.cell(row=row, column=3).value = dollar ### Медь
 
 	excel_file.save(PATH)
 
-def get_html(url, params = None):
+def get_html(url, params=None):
 	r = requests.get(url, params = params)
 	return r
 
-def parse_dollar(URL, date = None):
+def parse_dollar(URL, date=None):
 	link = str(URL) + str(date)
 	html = get_html(link)
 	if html.status_code == 200:
@@ -84,27 +90,46 @@ def get_con_Dollar(html): # ГОТОВ
 def parse_cooper():
 	options = webdriver.ChromeOptions()
 	options.add_argument('headless')
-	print("Соединение с сайтами установленно!")	
-	binary = ["Drivers\\Chrom\\chromedriver.exe", "Drivers\\FireFox\\geckodriver.exe", "Drivers\\Opera\\operadriver.exe"]
-	try:
-		driver = webdriver.Chrome(executable_path=binary[0], options=options)	
-		driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
-		print("Найден браузер Chrome. Начинаю работу!")
-	except:
+	print("Для получения данных с сайта меди, нужно выбрать установленный браузер!")
+	print("1 - Google Chrome, 2 - Mozila FireFox, 3 - Opera, Yandex - 4")
+	a = int(input("Введите номер браузера(Пример: 1 и enter)"))
+	binary = ["Drivers\\Chrom\\chromedriver.exe", "Drivers\\FireFox\\geckodriver.exe", "Drivers\\Opera\\operadriver.exe","Drivers\\Yandex\\yandexdriver.exe"]
+	if a == 1:
+		binar = binary[0]
 		try:
-			print("Не установлен Google Chrome. Ищу другой браузер")
-			driver = webdriver.Firefox(executable_path=binary[1], options=options)
+			driver = webdriver.Chrome(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
-			print("Найден браузер FireFox. Начинаю работу!")
+			print("Браузер Chrome успешно найден. Устанавливаю соединение...")
+			print("Соединение с сайтом установлено успешно!")
 		except:
-			try:
-				print("Не установлен FireFox. Ищу другой браузер")
-				driver = webdriver.Opera(executable_path=binary[2], options=options)
-				driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
-				print("Найден браузер Opera. Начинаю работу!")
-			except:
-				print("Я не нашёл браузер! Завершаю программу!")
-				sys.exit(1)
+			print("Браузер не найден или что-то пошло не так :(")
+	elif a == 2:
+		binar = binary[1]
+		try:           
+			driver = webdriver.Firefox(executable_path=binar, options=options)	
+			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+			print("Браузер Firefox успешно найден. Устанавливаю соединение...")
+			print("Соединение с сайтом установлено успешно!")
+		except:
+			print("Браузер не найден или что-то пошло не так :(")        
+	elif a == 3:
+		binar = binary[2]
+		try:           
+			driver = webdriver.Opera(executable_path=binar, options=options)	
+			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+			print("Браузер Opera успешно найден. Устанавливаю соединение...")
+			print("Соединение с сайтом установлено успешно!")
+		except:
+			print("Браузер не найден или что-то пошло не так :(")     
+	elif a == 4:
+		binar = binary[3]
+		try:           
+			driver = webdriver.Opera(executable_path=binar, options=options)	
+			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
+			print("Браузер Yandex успешно найден. Устанавливаю соединение...")
+			print("Соединение с сайтом установлено успешно!")
+		except:
+			print("Браузер не найден или что-то пошло не так :(")     			
 	try:
 		driver.implicitly_wait(7)
 		time.sleep(4)
@@ -120,7 +145,7 @@ def parse_cooper():
 		b = len(count)
 
 		if count[-1] == "0" and count[-2] == "0":
-			count = count[:b-3]
+			count = count[:b - 3]
 		else:
 			pass
 		return count
