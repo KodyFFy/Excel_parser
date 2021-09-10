@@ -35,9 +35,6 @@ def menu(URL):
 	row = _row
 	row = int(row) + 7
 
-
-	
-
 	date2 = datetime.date.today()
 	date2 = date2 + datetime.timedelta(days = 1)
 	date2 = str(date2)
@@ -88,8 +85,6 @@ def get_con_Dollar(html): # ГОТОВ
 	return count
 
 def parse_cooper():
-	options = webdriver.ChromeOptions()
-	options.add_argument('headless')
 	print("Для получения данных с сайта меди, нужно выбрать установленный браузер!")
 	print("1 - Google Chrome, 2 - Mozila FireFox, 3 - Opera, Yandex - 4")
 	a = int(input("Введите номер браузера(Пример: 1 и enter)"))
@@ -105,7 +100,9 @@ def parse_cooper():
 			print("Браузер не найден или что-то пошло не так :(")
 	elif a == 2:
 		binar = binary[1]
-		try:           
+		try:
+			options = webdriver.FirefoxOptions()
+			options.add_argument('headless')
 			driver = webdriver.Firefox(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Firefox успешно найден. Устанавливаю соединение...")
@@ -114,7 +111,9 @@ def parse_cooper():
 			print("Браузер не найден или что-то пошло не так :(")        
 	elif a == 3:
 		binar = binary[2]
-		try:           
+		try:
+			options = webdriver.Opera()
+			options.add_argument('headless')
 			driver = webdriver.Opera(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Opera успешно найден. Устанавливаю соединение...")
@@ -123,7 +122,9 @@ def parse_cooper():
 			print("Браузер не найден или что-то пошло не так :(")     
 	elif a == 4:
 		binar = binary[3]
-		try:           
+		try:
+			options = webdriver.ChromeOptions()
+			options.add_argument('headless')
 			driver = webdriver.Opera(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Yandex успешно найден. Устанавливаю соединение...")
