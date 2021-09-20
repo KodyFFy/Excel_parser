@@ -76,7 +76,7 @@ def parse_cooper():
 		binar = binary[1]
 		try:
 			options = webdriver.FirefoxOptions()
-			options.add_argument('headless')
+			options.headless = True
 			driver = webdriver.Firefox(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Firefox успешно найден. Устанавливаю соединение...")
@@ -237,7 +237,6 @@ btn1.grid(column = 1, row = 3)
 btn2 = tk.Button(GUI, text = "Информация",command = show_info, font = (60))
 btn2.grid(column = 2, row = 3)
 btn3 = tk.Button(GUI, text = "Старт",command = sts ,font = (60))
-#btn3.grid(column = 1, row = 4)
 btn3.place(x = 200, y = 157)
 
 
