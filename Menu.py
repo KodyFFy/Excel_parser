@@ -8,7 +8,6 @@ import tkinter as tk
 import tkinter.filedialog
 from tkinter import messagebox
 
-import Get_copper as cop
 import Get_Dollar as dol
 
 import requests
