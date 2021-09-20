@@ -64,7 +64,7 @@ def parse_cooper():
 		binar = binary[0]
 		try:
 			options = webdriver.ChromeOptions()
-			options.add_argument('headless')
+			options.headless = True
 			driver = webdriver.Chrome(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Chrome успешно найден. Устанавливаю соединение...")
@@ -87,9 +87,9 @@ def parse_cooper():
 	elif config['Settings']['browser_id'] == "3":
 		binar = binary[2]
 		try:
-			options = webdriver.Opera()
-			options.add_argument('headless')
-			driver = webdriver.Opera(executable_path=binar, options=options)	
+			options = webdriver.ChromeOptions()
+			options.headless = True
+			driver = webdriver.Chrome(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Opera успешно найден. Устанавливаю соединение...")
 			print("Соединение с сайтом установлено успешно!")
@@ -100,7 +100,7 @@ def parse_cooper():
 		binar = binary[3]
 		try:
 			options = webdriver.ChromeOptions()
-			options.add_argument('headless')
+			options.headless = True
 			driver = webdriver.Chrome(executable_path=binar, options=options)	
 			driver.get("https://www.lme.com/en/Metals/Non-ferrous/LME-Copper#Trading+day+summary")
 			print("Браузер Yandex успешно найден. Устанавливаю соединение...")
